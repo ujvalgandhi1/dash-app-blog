@@ -14,20 +14,19 @@ app = dash_app.server
 
 #Connecting to data in Blob Storage for overall data
 
-conn_str = "DefaultEndpointsProtocol=https;AccountName=farmlinksa;AccountKey=7fNrXKRwVYtFikz8zMKIxIrR5mjl0HKY1O500TfOp4Msy9Ogqt2k7Qrk+vE+blPSXwjRIv/UudMa4XioeNm7vA==;EndpointSuffix=core.windows.net"
-container = "fundraiseup"
-blob_name = "P2P2022.csv"
+conn_str = "Enter connection string from the Azure Portal -- Storage Account"
+container = "Enter container name"
+blob_name = "Enter blob name"
 
 container_client = ContainerClient.from_connection_string(conn_str=conn_str, container_name=container)
 downloaded_blob = container_client.download_blob(blob_name)
 
 df = pd.read_csv(StringIO(downloaded_blob.content_as_text()))
-df.rename(columns={'ProductRatio': 'RatioTowardsFundRaising'}, inplace=True)
-df[['RatioTowardsFundRaising']] = ( 100 * df[['RatioTowardsFundRaising']] ).round(2).astype(str) + "%" # The rounding is optional
 
-conn_str = "DefaultEndpointsProtocol=https;AccountName=farmlinksa;AccountKey=7fNrXKRwVYtFikz8zMKIxIrR5mjl0HKY1O500TfOp4Msy9Ogqt2k7Qrk+vE+blPSXwjRIv/UudMa4XioeNm7vA==;EndpointSuffix=core.windows.net"
-container = "fundraiseup"
-blob_name = "P2P2022AggData.csv"
+
+conn_str = "Enter connection string from the Azure Portal -- Storage Account"
+container = "Enter container name"
+blob_name = "Enter blob name"
 
 container_client = ContainerClient.from_connection_string(conn_str=conn_str, container_name=container)
 downloaded_blob = container_client.download_blob(blob_name)
