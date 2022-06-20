@@ -24,6 +24,8 @@ https://www.codegrepper.com/code-examples/python/python+create+venv+in+current+d
 **Step 5**. Now make sure you are on the dash-az folder using your Virtual Environment and run $pip freeze > requirements.txt
 
 **Creating the Azure Web App**
-![Azure Web App Creation Screen](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_1.PNG?raw=true)
 
-![Azure Web App Creation Screen](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_2.PNG?raw=true)
+Follow instructions via screenshots laid out here
+
+[Azure Web App Creation Screen](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_1.PNG?raw=true)
+[Azure Web App Creation Screen](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_2.PNG?raw=true)
