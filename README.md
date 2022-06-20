@@ -21,11 +21,23 @@ https://www.codegrepper.com/code-examples/python/python+create+venv+in+current+d
 
 **Step 4**. Put your application.py file inside the dash-az folder (One that has been testing locally)
 
+**Step 4a.** Run the packages you need via the pip install command. Note that the pandas/numpy in case you need them are somehow not supported if you just do pip install pandas and pip install numpy. As of this writing (June 2022), I had to do pip install pandas==1.3.5 and pip install numpy==1.21.6 to make the applicatation work 
+
 **Step 5**. Now make sure you are on the dash-az folder using your Virtual Environment and run $pip freeze > requirements.txt
 
 **Creating the Azure Web App**
 
 Follow instructions via screenshots laid out here
 
-[Azure Web App Creation Screen](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_1.PNG?raw=true)
-[Azure Web App Creation Screen](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_2.PNG?raw=true)
+[Azure Web App Creation Screen-Main](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_1.PNG?raw=true)
+
+[Azure Web App Creation Screen-ComputeSize](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_2.PNG?raw=true)
+
+**Deploying the Web App**
+Remain on the cmd and in the dash-az folder, run the following command
+az webapp up --location <your region> --name <your Azure Web App> --resource-group <Your Resource Group>
+  
+Replace the <region> with values of your region eg az web app up --location eastus
+Similarly, replace the <your Azure Web App> and <Your Resource Group> with the names of your Azure Web App and your resource group respectively. 
+
+Click Enter and wait for the deployment to go through. It *might* take some time.. Once deployed, you should be able to navigate to the URL (provided on the window OR via the portal) and check your Dash App !
