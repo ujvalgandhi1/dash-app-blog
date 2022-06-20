@@ -1,30 +1,40 @@
-# Run this app with `python app.py` and
-# visit http://127.0.0.1:8050/ in your web browser.
-
-from dash import Dash, dash, html, dcc, dash_table
+from azure.storage.blob import ContainerClient
+from io import StringIO
 import pandas as pd
-import pyodbc
-import dash_bootstrap_components as dbc 
-import plotly.graph_objects as go
-#pd.options.plotting.backend = "plotly"
+from dash import Dash, dash, html, dcc, dash_table
+import dash_bootstrap_components as dbc
+import plotly.graph_objects as go 
+
 
 dash_app = dash.Dash() 
 app = dash_app.server 
 
-#Azure SQL Credentials
-server = 'farmlinkinsights.database.windows.net' 
-database = 'farmlinkdonorinsights' 
-username = 'farmlinkadmin' 
-password = 'Farmlink2021'  
-cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
-cursor = cnxn.cursor()
-query = "select [Fundraiser Full Name] as Name, sum(cast([Converted Payout Amount (USD)] as float)) as AmountRaised from fundraiseup.DonationsDataMain where [Campaign Name] = '2022 SUMMER FL P2P' group by [Fundraiser Full Name] order by 2 desc;"
-df = pd.read_sql(query, cnxn)
+#app = dash.Dash(__name__)
+#server = app.server
 
-kpiquery = "select sum(cast([Converted Payout Amount (USD)] as float)) as AmountRaised from fundraiseup.DonationsDataMain where [Campaign Name] = '2022 SUMMER FL P2P';"
-kpidf = pd.read_sql(kpiquery, cnxn)
+#Connecting to data in Blob Storage for overall data
 
-#df = pd.read_csv('https://gist.githubusercontent.com/chriddyp/c78bf172206ce24f77d6363a2d754b59/raw/c353e8ef842413cae56ae3920b8fd78468aa4cb2/usa-agricultural-exports-2011.csv')
+conn_str = "DefaultEndpointsProtocol=https;AccountName=farmlinksa;AccountKey=7fNrXKRwVYtFikz8zMKIxIrR5mjl0HKY1O500TfOp4Msy9Ogqt2k7Qrk+vE+blPSXwjRIv/UudMa4XioeNm7vA==;EndpointSuffix=core.windows.net"
+container = "fundraiseup"
+blob_name = "P2P2022.csv"
+
+container_client = ContainerClient.from_connection_string(conn_str=conn_str, container_name=container)
+downloaded_blob = container_client.download_blob(blob_name)
+
+df = pd.read_csv(StringIO(downloaded_blob.content_as_text()))
+df.rename(columns={'ProductRatio': 'RatioTowardsFundRaising'}, inplace=True)
+df[['RatioTowardsFundRaising']] = ( 100 * df[['RatioTowardsFundRaising']] ).round(2).astype(str) + "%" # The rounding is optional
+
+conn_str = "DefaultEndpointsProtocol=https;AccountName=farmlinksa;AccountKey=7fNrXKRwVYtFikz8zMKIxIrR5mjl0HKY1O500TfOp4Msy9Ogqt2k7Qrk+vE+blPSXwjRIv/UudMa4XioeNm7vA==;EndpointSuffix=core.windows.net"
+container = "fundraiseup"
+blob_name = "P2P2022AggData.csv"
+
+container_client = ContainerClient.from_connection_string(conn_str=conn_str, container_name=container)
+downloaded_blob = container_client.download_blob(blob_name)
+
+kpidf = pd.read_csv(StringIO(downloaded_blob.content_as_text()))
+
+#dash_app = Dash(__name__)
 
 
 def generate_table(dataframe, max_rows=10):
@@ -40,14 +50,12 @@ def generate_table(dataframe, max_rows=10):
     ])
 
 
-dash_app = Dash(__name__)
-dash_app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 #Plotly Viz
 fig = go.Figure(go.Indicator(
     mode = "number+gauge+delta",
     gauge = {'shape': "bullet"},
-    #delta = {'reference': 300},
+    delta = {'reference': float(pd.unique(kpidf['FundRaisingGoal']))},
     #value = 220
     value = float(pd.unique(kpidf['AmountRaised']))
     ))
@@ -85,7 +93,3 @@ dash_app.layout =  html.Div([
 
 if __name__ == '__main__':
     dash_app.run_server(debug=True)
-
-
-#Deploying to Azure
-#https://www.phillipsj.net/posts/deploying-dash-to-azure-without-using-docker/
