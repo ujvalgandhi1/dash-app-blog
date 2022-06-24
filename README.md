@@ -34,6 +34,10 @@ Follow instructions via screenshots laid out here
 
 [Azure Web App Creation Screen-ComputeSize](https://github.com/ujvalgandhi1/dash-app-blog/tree/main/assets/AzureWebAppCreation_2.PNG?raw=true)
 
+Once the Azure Web App is created on the portal, go to the configuration screen and set this property
+SCM_DO_BUILD_DURING_DEPLOYMENT as True
+Click Save to confirm your changes
+
 **Deploying the Web App**
 Remain on the cmd and in the dash-az folder, run the following command
 az webapp up --location <your region> --name <your Azure Web App> --resource-group <Your Resource Group>
