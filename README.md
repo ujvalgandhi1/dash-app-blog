@@ -38,6 +38,9 @@ Once the Azure Web App is created on the portal, go to the configuration screen 
 SCM_DO_BUILD_DURING_DEPLOYMENT as True
 Click Save to confirm your changes
 
+Then set the property WEBSITE_RUN_FROM_PACKAGE to be 0
+Click Save to confirm your changes
+
 **Deploying the Web App**
 Remain on the cmd and in the dash-az folder, run the following command
 az webapp up --location <your region> --name <your Azure Web App> --resource-group <Your Resource Group>
