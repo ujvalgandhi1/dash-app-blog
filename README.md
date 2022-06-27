@@ -20,6 +20,15 @@ https://www.codegrepper.com/code-examples/python/python+create+venv+in+current+d
 **Step 3**. go to the scripts folder using your cmd and run mkdir dash-az there
 
 **Step 4**. Put your application.py file inside the dash-az folder (One that has been testing locally)
+Make sure you have this line(s) of code after you have declared your packages
+dash_app = dash.Dash() 
+app = dash_app.server 
+
+At the very end, you need this
+
+if __name__ == '__main__':
+    dash_app.run_server(debug=True)
+
 
 **Step 4a.** Run the packages you need via the pip install command. Note that the pandas/numpy in case you need them are somehow not supported if you just do pip install pandas and pip install numpy. As of this writing (June 2022), I had to do pip install pandas==1.3.5 and pip install numpy==1.21.6 to make the applicatation work 
 Any additional one you need to add is pip install gunicorn (This might not get installed by itself as it is supposed to do)
