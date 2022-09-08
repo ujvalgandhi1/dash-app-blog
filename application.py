@@ -14,7 +14,7 @@ app = dash_app.server
 
 #Connecting to data in Blob Storage for overall data
 
-conn_str = "Enter connection string from the Azure Portal -- Storage Account"
+conn_str = "Enter connection string from the Azure Portal -- Storage Account :: This is on the portal"
 container = "Enter container name"
 blob_name = "Enter blob name"
 
